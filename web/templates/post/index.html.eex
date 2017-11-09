@@ -1,0 +1,19 @@
+
+<ul class="collection">
+	<%= for post <- @posts do %>
+		<li class="collection-item">	
+			<%= post.title%>
+			<div class="right">
+					<%= link "Edit", to: post_path(@conn, :edit, post)%>
+					<%= button "Delete", to: post_path(@conn, :delete, post), method: :delete %>
+			</div>
+		</li>
+	<% end %>
+</ul>
+
+<div class="fixed-action-btn">
+	<%= link to: post_path(@conn, :new), class: "btn-floating btn-large waves-effect waves-light red" do %>
+			<i class="material-icons">Add</i>
+		<% end %>
+</div>
+
