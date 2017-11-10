@@ -1,0 +1,9 @@
+<h5><%= @post.title %></h5>
+<h5>Comments</h5>
+<ul class="collection">
+	<%= for comment <- @comments do %>
+		<li class="collection-item">	
+			<%= comment.content%>
+		</li>
+	<% end %>
+</ul>

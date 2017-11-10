@@ -6,5 +6,5 @@
 		<%= error_tag f, :title %>
 	</div>
 
-	<%= submit "save topic", class: "btn btn-primary" %>
+	<%= submit "save post", class: "btn btn-primary" %>
 <% end %>	

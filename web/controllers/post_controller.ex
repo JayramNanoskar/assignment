@@ -2,11 +2,31 @@ defmodule Webpost.PostController do
 	use Webpost.Web, :controller
 
 	alias Webpost.Post
+	alias Webpost.Comment
 
 	def index(conn, _params) do
     posts= 	Repo.all(Post)
     render conn, "index.html", posts: posts
   end
+
+
+  def show(conn, %{"id" => post_id}) do
+
+  	post= Repo.get!(Post, post_id)
+  	c= post |> Repo.preload(:comments)
+  	comments= c.comments
+  	IO.puts "******post******"
+
+  	IO.inspect post
+
+  	IO.puts "******comments******"
+
+  	IO.inspect comments
+  	
+  	changeset= Post.changeset(post)
+  	render(conn, "show.html", post: post, changeset: changeset, comments: comments)
+  end
+
 
  	def new(conn, _params) do
 
@@ -54,7 +74,7 @@ defmodule Webpost.PostController do
 		case Repo.update(changeset) do
 			{:ok, _post}->
 				conn
-				|> put_flash(:info, "Topic Updated")
+				|> put_flash(:info, "Post Updated")
 				|> redirect(to: post_path(conn, :index))
 			{:error, changeset}->
 				render conn, "edit.html", changeset: changeset, post: old_post

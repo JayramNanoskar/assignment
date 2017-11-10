@@ -4,3 +4,7 @@
 	text-transform: capitalize;
 
 }
+
+:error{
+	color: red;
+}
