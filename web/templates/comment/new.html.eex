@@ -1,0 +1,10 @@
+<%= form_for @changeset, comment_path(@conn, :create), fn f-> %>
+
+	<div class="form-group">
+		
+		<%= text_input f, :title, placeholder: "Title", class: "form-control" %>
+		<%= error_tag f, :title %>
+	</div>
+
+	<%= submit "save post", class: "btn btn-primary" %>
+<% end %>	

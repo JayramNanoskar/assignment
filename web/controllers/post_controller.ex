@@ -4,6 +4,8 @@ defmodule Webpost.PostController do
 	alias Webpost.Post
 	alias Webpost.Comment
 
+	plug :scrub_params, "comment" when action in [:add_comment]
+
 	def index(conn, _params) do
     posts= 	Repo.all(Post)
     render conn, "index.html", posts: posts
@@ -15,13 +17,13 @@ defmodule Webpost.PostController do
   	post= Repo.get!(Post, post_id)
   	c= post |> Repo.preload(:comments)
   	comments= c.comments
-  	IO.puts "******post******"
+  	# IO.puts "******post******"
 
-  	IO.inspect post
+  	# IO.inspect post
 
-  	IO.puts "******comments******"
+  	# IO.puts "******comments******"
 
-  	IO.inspect comments
+  	# IO.inspect comments
   	
   	changeset= Post.changeset(post)
   	render(conn, "show.html", post: post, changeset: changeset, comments: comments)
@@ -53,7 +55,6 @@ defmodule Webpost.PostController do
  		end
  	 
  	end
-
 
 
  	def edit(conn, %{"id" => post_id}) do
@@ -90,4 +91,22 @@ defmodule Webpost.PostController do
  		|> put_flash(:info, "Topic Deleted")
  		|> redirect(to: post_path(conn, :index))
  	end
+
+
+  def add_comment(conn, %{"comment" => comment_params, "post_id" => post_id}) do
+    changeset = Comment.changeset(%Comment{}, Map.put(comment_params, "post_id", post_id))
+    post = Repo.get(Post, post_id) |> Repo.preload([:comments])
+
+    if changeset.valid? do
+      Repo.insert(changeset)
+
+      conn
+      |> put_flash(:info, "Comment added.")
+      |> redirect(to: post_path(conn, :show, post))
+    else
+      render(conn, "show.html", post: post, changeset: changeset)
+    end
+  end
+
+  
 end

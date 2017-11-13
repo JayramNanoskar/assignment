@@ -1,4 +1,4 @@
-defmodule Webpost.Comment do
+	defmodule Webpost.Comment do
 	
 	use Webpost.Web, :model
 

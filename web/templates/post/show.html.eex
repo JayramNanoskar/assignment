@@ -1,4 +1,16 @@
 <h5><%= @post.title %></h5>
+
+<%= form_for @changeset, comment_path(@conn, :new), fn f-> %>
+
+	<div class="form-group">
+		
+		<%= text_input f, :title, placeholder: "Title", class: "form-control" %>
+		<%= error_tag f, :title %>
+	</div>
+
+	<%= submit "add comment", class: "btn btn-primary" %>
+<% end %>	
+
 <h5>Comments</h5>
 <ul class="collection">
 	<%= for comment <- @comments do %>
