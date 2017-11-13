@@ -1,6 +1,7 @@
-	defmodule Webpost.Comment do
+ 	defmodule Webpost.Comment do
 	
 	use Webpost.Web, :model
+
 
 	schema "comments" do
 		
@@ -11,7 +12,7 @@
 
 	def changeset(struct, params \\ %{}) do
 		(struct) 
-		|> (cast(params, [:content]))
-		|> (validate_required [:content])
+		|> cast(params, [:content])
+		|> validate_required([:content])
 	end
 end

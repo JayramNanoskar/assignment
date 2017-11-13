@@ -23,8 +23,10 @@ defmodule Webpost.Router do
     # put "/posts/:id", PostController, :update
 
     resources "/posts", PostController
-    resources "/comments", PostController
-    get "/comments/new", CommentController, :new
+    
+    # get "/comments/new", CommentController, :new
+    # post "/comments", CommentController, :create
+    resources "/comments", CommentController
     
   end
 
