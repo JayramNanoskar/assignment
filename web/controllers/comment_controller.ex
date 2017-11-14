@@ -4,8 +4,10 @@ defmodule Webpost.CommentController do
 	alias Webpost.Post
 	alias Webpost.Comment
 
-	def new(conn, _params) do
-
+	def new(conn, params) do
+		IO.puts "$$$$$$$$$$   inside comment new  $$$$$$$$"
+		IO.inspect params
+		
  		struct= %Comment{}
  		params= %{}
 
@@ -13,8 +15,7 @@ defmodule Webpost.CommentController do
 		render(conn, "new.html", changeset: changeset)	
 
  	end
-
-
+ 	
  	def create(conn, params) do
 
  		IO.puts "+++++++++++++++++++++"

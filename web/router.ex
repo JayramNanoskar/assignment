@@ -21,12 +21,14 @@ defmodule Webpost.Router do
     # post "/posts", PostController, :create
     # get "/posts/:id/edit", PostController, :edit
     # put "/posts/:id", PostController, :update
-
+    post "/posts", PostController, :isActive
     resources "/posts", PostController
     
     # get "/comments/new", CommentController, :new
     # post "/comments", CommentController, :create
+    
     resources "/comments", CommentController
+   # resources "/status", CommentController, :isActive
     
   end
 

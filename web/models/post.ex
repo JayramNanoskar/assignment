@@ -6,6 +6,7 @@ defmodule Webpost.Post do
 			schema "posts" do
 
 				field :title, :string	
+				field :isActive, :string
 				has_many :comments, Webpost.Comment
 			end	
 
@@ -13,9 +14,9 @@ defmodule Webpost.Post do
 			def changeset(struct, params \\ %{}) do
 				(struct) 
 				|> (cast(params, [:title]))
-				|> (validate_required([:title]))
+				|> (validate_required([:title] , [:isActive]))
 			end
-
+			
 end	
 
 

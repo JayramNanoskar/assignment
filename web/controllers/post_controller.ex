@@ -4,14 +4,17 @@ defmodule Webpost.PostController do
 	alias Webpost.Post
 	alias Webpost.Comment
 
-	
-
 	def index(conn, _params) do
     posts= 	Repo.all(Post)
     render conn, "index.html", posts: posts
   end
 
-
+  def isActive(conn, params) do
+    IO.puts "###########################################"
+    IO.inspect params
+    render(conn, "index.html")
+  end
+  
   def show(conn, %{"id" => post_id}) do
 
   	post= Repo.get!(Post, post_id)
@@ -67,7 +70,7 @@ defmodule Webpost.PostController do
 
 
  	def update(conn, %{"id"=> post_id, "post"=> post}) do
-		# IO.inspect params 
+		# IO.inspect params q
 		#title= params[:post][:title]	
 		old_post= Repo.get(Post, post_id)
 		changeset= Post.changeset(old_post, post)
@@ -106,7 +109,7 @@ defmodule Webpost.PostController do
   #   else
   #     render(conn, "show.html", post: post, changeset: changeset)
   #   end
-  end
+  #end
 
   
 end
