@@ -9,10 +9,20 @@ defmodule Webpost.PostController do
     render conn, "index.html", posts: posts
   end
 
-  def isActive(conn, params) do
+  def is_active(conn, %{"id" => post_id}) do
+    counter = 1
+    post=Repo.get(Post, post_id)
+    changeset=Post.changeset(post)
     IO.puts "###########################################"
-    IO.inspect params
-    render(conn, "index.html")
+    IO.inspect post
+
+
+      counter=1
+      conn
+          |> put_flash(:info, "Post Deactivated")
+          |> redirect(to: post_path(conn, :index, counter: 1))
+
+    #render(conn, "index.html",changeset: changeset, post: post)
   end
   
   def show(conn, %{"id" => post_id}) do
@@ -20,14 +30,6 @@ defmodule Webpost.PostController do
   	post= Repo.get!(Post, post_id)
   	c= post |> Repo.preload(:comments)
   	comments= c.comments
-  	# IO.puts "******post******"
-
-  	# IO.inspect post
-
-  	# IO.puts "******comments******"
-
-  	# IO.inspect comments
-  	
   	changeset= Post.changeset(post)
   	render(conn, "show.html", post: post, changeset: changeset, comments: comments)
   end

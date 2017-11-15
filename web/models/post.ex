@@ -13,8 +13,8 @@ defmodule Webpost.Post do
 
 			def changeset(struct, params \\ %{}) do
 				(struct) 
-				|> (cast(params, [:title]))
-				|> (validate_required([:title] , [:isActive]))
+				|> cast(params, [:title, :isActive])
+				|> validate_required([:title, :isActive])
 			end
 			
 end	
