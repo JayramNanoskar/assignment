@@ -22,6 +22,7 @@ defmodule Webpost.Router do
     # get "/posts/:id/edit", PostController, :edit
     # put "/posts/:id", PostController, :update
     get "/posts/:id/isactive", PostController, :is_active
+    get "/posts/:id/isinactive", PostController, :is_inactive
     
     resources "/posts", PostController 
     # resources "/posts", PostController do 

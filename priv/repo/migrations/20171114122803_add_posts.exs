@@ -5,7 +5,7 @@ defmodule Webpost.Repo.Migrations.AddPosts do
 
   	alter table(:posts) do
   		
-  		add :isActive, :string
+  		add :is_active, :boolean, default: true
 
   	end
 

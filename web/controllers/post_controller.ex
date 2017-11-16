@@ -9,22 +9,33 @@ defmodule Webpost.PostController do
     render conn, "index.html", posts: posts
   end
 
-  def is_active(conn, %{"id" => post_id}) do
-    counter = 1
-    post=Repo.get(Post, post_id)
-    changeset=Post.changeset(post)
-    IO.puts "###########################################"
-    IO.inspect post
 
+  def is_active(conn, %{"id"=> post_id, "is_active" => status}) do
+     IO.inspect status
+     new= %{"is_active" => status}
+     post=Repo.get(Post, post_id)
+     changeset=Post.changeset(post, new)
 
-      counter=1
+      Repo.update(changeset)
       conn
           |> put_flash(:info, "Post Deactivated")
-          |> redirect(to: post_path(conn, :index, counter: 1))
-
+          |> redirect(to: post_path(conn, :index))
     #render(conn, "index.html",changeset: changeset, post: post)
   end
   
+  def is_inactive(conn, %{"id"=> post_id, "is_active" => status}) do
+    IO.inspect status
+     new= %{"is_active" => status}
+     post=Repo.get(Post, post_id)
+     changeset=Post.changeset(post, new)
+
+      Repo.update(changeset)
+      conn
+          |> put_flash(:info, "Post Activated")
+          |> redirect(to: post_path(conn, :index))
+  end
+
+
   def show(conn, %{"id" => post_id}) do
 
   	post= Repo.get!(Post, post_id)
@@ -74,6 +85,7 @@ defmodule Webpost.PostController do
  	def update(conn, %{"id"=> post_id, "post"=> post}) do
 		# IO.inspect params q
 		#title= params[:post][:title]	
+    IO.inspect post
 		old_post= Repo.get(Post, post_id)
 		changeset= Post.changeset(old_post, post)
 		#IO.inspect changeset
