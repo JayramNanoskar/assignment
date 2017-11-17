@@ -8,12 +8,11 @@
 		<li class="collection-item">	
 			<%= comment.content%>
 		</li>
-	<% end %>
+	<% end %>																											
 </ul>
 
-
 <div class="fixed-action-btn">
-	<%= link to: comment_path(@conn, :new), class: "btn-floating btn-large waves-effect waves-light red" do %>
+	<%= link to: post_path(@conn, :new), class: "btn-floating btn-large waves-effect waves-light red" do %>
 			<i class="material-icons">Add</i>
 		<% end %>
 </div>

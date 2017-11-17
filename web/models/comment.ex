@@ -1,7 +1,7 @@
  	defmodule Webpost.Comment do
 	
 	use Webpost.Web, :model
-
+	
 
 	schema "comments" do
 		

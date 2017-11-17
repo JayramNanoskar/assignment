@@ -24,11 +24,11 @@ defmodule Webpost.Router do
     get "/posts/:id/isactive", PostController, :is_active
     get "/posts/:id/isinactive", PostController, :is_inactive
     
-    resources "/posts", PostController 
-    # resources "/posts", PostController do 
-    #     resources "/comments", CommentController
-    # end
-    resources "/comments", CommentController
+    #resources "/posts", PostController 
+    resources "/posts", PostController do 
+        resources "/comments", CommentController
+    end
+    #resources "/comments", CommentController
     # get "/comments/new", CommentController, :new
     # post "/comments", CommentController, :create
     

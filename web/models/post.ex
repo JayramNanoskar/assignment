@@ -1,7 +1,7 @@
 defmodule Webpost.Post do 
 
 	use Webpost.Web, :model
-
+	
 
 			schema "posts" do
 
