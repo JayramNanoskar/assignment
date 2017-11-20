@@ -5,7 +5,8 @@ defmodule Webpost.PostController do
 	alias Webpost.Comment
 
 	def index(conn, _params) do
-    posts= 	Repo.all(Post)
+    query= from(p in Post, order_by: p.id)
+    posts= 	Repo.all(query)
     render conn, "index.html", posts: posts
   end
 
