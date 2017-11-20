@@ -36,19 +36,6 @@ defmodule Webpost.PostController do
   end
 
 
-  def show(conn, %{"id" => post_id}) do
-
-  	post= Repo.get!(Post, post_id)
-  	c= post |> Repo.preload(:comments)
-  	comments= c.comments
-    IO.puts "________________________________________"
-    IO.inspect comments
-    IO.puts "________________________________________"
-  	changeset= Post.changeset(post)
-  	render(conn, "show.html", post: post, changeset: changeset, comments: comments)
-  end
-
-
  	def new(conn, _params) do
 
  		struct= %Post{}
