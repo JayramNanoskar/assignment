@@ -1,4 +1,22 @@
-<h4><%= @post.title %></h4	>
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+</head>
+<body>
+<h4><%= @post.title %></h4>
+
+
+<%= form_for @changeset, post_comment_path(@conn, :create, @post), fn f-> %>
+
+	<div class="form-group">
+		
+		<%= text_input f, :title, placeholder: "Title", class: "form-control" %>
+		<%= error_tag f, :title %>
+	</div>
+
+	<%= submit "add comment", class: "btn btn-primary" %>
+<% end %>	
+
 
 <h5>Comments</h5>
 <ul class="collection">
@@ -8,10 +26,12 @@
 		</li>
 	<% end %>																											
 </ul>
+</body>
+</html>
 
-
-<div class="fixed-action-btn">
-	<%= link to: post_comment_path(@conn, :new, @post), class: "btn-floating btn-large waves-effect waves-light red" do %>
-			<i class="material-icons">Add</i>
+<%# <div class="fixed-action-btn">
+	<%= link to: post_comment_path(@conn, :create, @post), class: "btn-floating btn-large waves-effect waves-light red" do %>
+			<%# <i class="material-icons">Add</i>
 		<% end %>
-</div>
+<%# </div> %>
+ <%# %> <%# %> <%# %>

@@ -23,7 +23,7 @@ defmodule Webpost.CommentController do
  		struct= %Comment{}
  		params= %{}
  		changeset= Comment.changeset(struct, params)
-		render(conn, "new.html", changeset: changeset, post: post)	
+		render(conn, "show.html", changeset: changeset, post: post)	
 
  	end
  	

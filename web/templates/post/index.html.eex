@@ -1,3 +1,8 @@
+<html>
+<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+</head>
+<body>
 <h5>Posts</h5>
 <ul class="collection">
 	<%= for post <- @posts do %>
@@ -27,4 +32,5 @@
 			<i class="material-icons">Add</i>
 		<% end %>
 </div>
-
+</body>
+</html>
