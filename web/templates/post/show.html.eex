@@ -1,5 +1,9 @@
-<h5><%= @post.title %></h5>
-
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+</head>
+<body>
+<h4><%= @post.title %></h4>
 
 
 <h5>Comments</h5>
@@ -7,12 +11,17 @@
 	<%= for comment <- @comments do %>
 		<li class="collection-item">	
 			<%= comment.content%>
+			<%=link "Edit", to: post_comment_path(@conn, :edit, @post, comment) %>
+			<%=link "Delete", to: post_comment_path(@conn, :delete, @post, comment) %>
 		</li>
 	<% end %>																											
 </ul>
+</body>
+</html>
 
-<div class="fixed-action-btn">
-	<%= link to: post_path(@conn, :new), class: "btn-floating btn-large waves-effect waves-light red" do %>
-			<i class="material-icons">Add</i>
+<%# <div class="fixed-action-btn">
+	<%= link to: post_comment_path(@conn, :create, @post), class: "btn-floating btn-large waves-effect waves-light red" do %>
+			<%# <i class="material-icons">Add</i>
 		<% end %>
-</div>
+<%# </div> %>
+ <%# %> <%# %> <%# %>

@@ -4,17 +4,6 @@ defmodule Webpost.CommentController do
 	alias Webpost.Post
 	alias Webpost.Comment
 
-	def show(conn, %{"id" => post_id}) do
-
-  	post= Repo.get!(Post, post_id)
-  	c= post |> Repo.preload(:comments)
-  	comments= c.comments
-    IO.puts "#################____________________________##############"
-    IO.inspect comments	
-    IO.puts "#################___________________________###############"
-  	changeset= Post.changeset(post)
-  	render(conn, "show.html", post: post, changeset: changeset, comments: comments)
-  end
 
 	def new(conn, %{"post_id" => post_id}) do
 		IO.puts "=======================  inside comment new  ==========================="
@@ -27,6 +16,15 @@ defmodule Webpost.CommentController do
 
  	end
  	
+ 	def edit(conn, %{"id" => comment_id, "post_id" => post_id}) do
+ 		IO.puts "=======================  inside comment edit  ==========================="
+ 		IO.inspect comment_id
+ 		post= Repo.get(Post, post_id)
+ 		IO.puts "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+ 		IO.inspect post_id	
+ 		render conn. "edit.html", post_id: post_id, comment_id: comment_id
+ 	end
+
  	def create(conn, params) do
 
  		IO.puts "=======================  inside comment create  ==========================="

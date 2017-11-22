@@ -13,27 +13,21 @@ defmodule Webpost.PostController do
 
   def is_active(conn, %{"id"=> post_id, "is_active" => status}) do
      IO.inspect status
-     new= %{"is_active" => status}
+     new_status= %{"is_active" => status}
      post=Repo.get(Post, post_id)
-     changeset=Post.changeset(post, new)
-
+     changeset=Post.changeset(post, new_status)
+    if(status==true) do
       Repo.update(changeset)
       conn
           |> put_flash(:info, "Post Deactivated")
           |> redirect(to: post_path(conn, :index))
-    #render(conn, "index.html",changeset: changeset, post: post)
-  end
-  
-  def is_inactive(conn, %{"id"=> post_id, "is_active" => status}) do
-    IO.inspect status
-     new= %{"is_active" => status}
-     post=Repo.get(Post, post_id)
-     changeset=Post.changeset(post, new)
-
-      Repo.update(changeset)
-      conn
+        else
+           Repo.update(changeset)
+          conn
           |> put_flash(:info, "Post Activated")
           |> redirect(to: post_path(conn, :index))
+        end
+    #render(conn, "index.html",changeset: changeset, post: post)
   end
 
 
@@ -100,6 +94,17 @@ defmodule Webpost.PostController do
  		|> redirect(to: post_path(conn, :index))
  	end
 
+  def show(conn, %{"id" => post_id}) do
+
+    post= Repo.get!(Post, post_id)
+    c= post |> Repo.preload(:comments)
+    comments= c.comments
+    IO.puts "#################____________________________##############"
+    IO.inspect comments 
+    IO.puts "#################___________________________###############"
+    changeset= Post.changeset(post)
+    render(conn, "show.html", post: post, changeset: changeset, comments: comments)
+  end
 
   # def add_comment(conn, %{"comment" => comment_params, "post_id" => post_id}) do
   #   changeset = Comment.changeset(%Comment{}, Map.put(comment_params, "post_id", post_id))
