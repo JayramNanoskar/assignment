@@ -5,6 +5,7 @@
 <body>
 <h4><%= @post.title %></h4>
 
+<%= render Webpost.CommentView, "new.html" ,changeset: @changeset, conn: @conn, post: @post %>
 
 <h5>Comments</h5>
 <ul class="collection">
@@ -19,9 +20,3 @@
 </body>
 </html>
 
-<%# <div class="fixed-action-btn">
-	<%= link to: post_comment_path(@conn, :create, @post), class: "btn-floating btn-large waves-effect waves-light red" do %>
-			<%# <i class="material-icons">Add</i>
-		<% end %>
-<%# </div> %>
- <%# %> <%# %> <%# %>

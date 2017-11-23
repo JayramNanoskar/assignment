@@ -42,7 +42,7 @@ defmodule Webpost.CommentController do
  										IO.inspect(comment)
  										conn
  										|> put_flash(:info, "Comment Created")
- 										|> redirect(to: post_comment_path(conn, :new, post))						
+ 										|> redirect(to: post_path(conn, :show, post))						
  			{:error, changeset}-> 
  														IO.puts "---------------------"
  														IO.inspect(changeset)
