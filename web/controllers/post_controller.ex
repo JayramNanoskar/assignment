@@ -70,6 +70,7 @@ defmodule Webpost.PostController do
  	def update(conn, %{"id"=> post_id, "post"=> post}) do
 		# IO.inspect params q
 		#title= params[:post][:title]	
+    IO.inspect "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
     IO.inspect post
 		old_post= Repo.get(Post, post_id)
 		changeset= Post.changeset(old_post, post)
@@ -96,8 +97,8 @@ defmodule Webpost.PostController do
 
 
 
-  def show(conn, %{"id" => post_id}) do
-
+  def show(conn, params) do
+    %{"id" => post_id}=params
     post= Repo.get!(Post, post_id)
     c= post |> Repo.preload(:comments)
     comments= c.comments
@@ -113,12 +114,6 @@ defmodule Webpost.PostController do
   end
 
   
-
-
-
-
-
-
 
 
 
