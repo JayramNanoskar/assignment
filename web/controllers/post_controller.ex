@@ -16,7 +16,7 @@ defmodule Webpost.PostController do
      new_status= %{"is_active" => status}
      post=Repo.get(Post, post_id)
      changeset=Post.changeset(post, new_status)
-    if(status==true) do
+    if(status) do
       Repo.update(changeset)
       conn
           |> put_flash(:info, "Post Deactivated")

@@ -15,6 +15,17 @@ defmodule Webpost.CommentController do
 		render(conn, "show.html", changeset: changeset, post: post)	
 	end
  	
+
+ 	def delete(conn, %{"comment" => comment, "id" => comment_id} ) do
+ 		IO.puts "@@@@@@@@@@@@@ inside delete comment  @@@@@@@@@@@@@@"
+ 	  Repo.get!(Comment, comment_id) |> Repo.delete!
+
+ 		conn
+ 		|> put_flash(:info, "Comment Deleted")
+ 		|> redirect(to: post_path(conn, :show))
+ 	end
+
+
  	def update(conn, %{"comment" => comment, "id" => comment_id, "post_id" => post_id}) do
  		IO.puts "=======================  inside comment update  ==========================="
  		IO.inspect comment

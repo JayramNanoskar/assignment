@@ -13,7 +13,7 @@
 		<li class="collection-item">	
 			<%= comment.content%>
 			<%=link "Edit", to: post_comment_path(@conn, :edit, @post, comment) %>
-			<%=link "Delete", to: post_comment_path(@conn, :delete, @post, comment) %>
+			<%=link "Delete", to: post_comment_path(@conn, :delete, @post, comment), method: :delete %>
 		</li>
 	<% end %>																											
 </ul>
