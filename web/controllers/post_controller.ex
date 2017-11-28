@@ -7,7 +7,11 @@ defmodule Webpost.PostController do
 	def index(conn, _params) do
     query= from(p in Post, order_by: p.id)
     posts= 	Repo.all(query)
-    render conn, "index.html", posts: posts
+    total_post= Repo.one(from(p in Post, select: count(p.id)))
+    IO.inspect total_post
+    # IO.inspect total_post, charlists: :as_lists
+
+    render conn, "index.html", posts: posts, total: total_post
   end
 
 
@@ -105,16 +109,20 @@ defmodule Webpost.PostController do
     struct= %Comment{}
     params= %{}
     changeset= Comment.changeset(struct, params)
+
+    query= from p in Post, join: c in Comment, on: c.post_id == p.id, 
+    where: p.id == ^post_id, select: count(c.id)
+    total_comments= Repo.one(query)
+    
     # IO.puts "#################____________________________##############"
     # IO.inspect comments 
     # IO.puts "#################___________________________###############"
     # changeset= Repo.all(Ecto.assoc(post, :comments))
     # changeset= Post.changeset(post)
-    render(conn, "show.html", post: post,  changeset: changeset, comments: comments)
+    render(conn, "show.html", post: post,  changeset: changeset, comments: comments, total_comments: total_comments)
   end
 
   
-
 
 
 

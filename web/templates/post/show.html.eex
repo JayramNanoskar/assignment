@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 </head>
 <body>
-<h4><%= @post.title %></h4>
+<h4><%= @post.title %>(<%= @total_comments %>)</h4>
 
 <%= render Webpost.CommentView, "new.html" ,changeset: @changeset, conn: @conn, post: @post %>
 
