@@ -8,11 +8,9 @@
 	<%= for post <- @posts do %>
 		<li class="collection-item">	
 			<%= link post.title, to: post_path(@conn, :show, post)%>
+			<%# <img class="img_comment" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJFARts0JzzxkPFrpZxRTWI_inyOlgxCWuq8LFekHCELzASG4qLQ"/> %>(<%= post.count%>)
 			<div class="right"> 
-			<% IO.inspect post %>
-
-
-
+			
 				<%= link "Show", to: post_path(@conn, :show, post) %>
 				<%= link "Edit", to: post_path(@conn, :edit, post) %>
 				<%= link "Delete", to: post_path(@conn, :delete, post), method: :delete %>

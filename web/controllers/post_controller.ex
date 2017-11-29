@@ -5,14 +5,29 @@ defmodule Webpost.PostController do
 	alias Webpost.Comment
 
 	def index(conn, _params) do
-    query= from(p in Post, order_by: p.id)
+    query= from(p in Post, order_by: p.title)
     posts= 	Repo.all(query)
-    total_post= Repo.one(from(p in Post, select: count(p.id)))
-    IO.inspect total_post
-    # IO.inspect total_post, charlists: :as_lists
 
+    posts = for post <- posts do
+      IO.inspect post
+      IO.puts "======================  ************            ==========================="
+      %Webpost.Post{id: post_id}= post
+      total_comm=Repo.one(from p in Post, join: c in Comment, on: c.post_id == p.id, 
+      where: p.id== ^post_id, select: count(c.id))
+      IO.inspect total_comm
+      c = %{count: total_comm}
+      Map.merge(post, c)
+    end
+
+    total_post= Repo.one(from(p in Post, select: count(p.id)))
+    # IO.inspect total_post, charlists: :as_lists
+    IO.puts "======================              ==========================="
+    IO.inspect posts
+    IO.puts "======================              ==========================="
     render conn, "index.html", posts: posts, total: total_post
   end
+
+
 
 
   def is_active(conn, %{"id"=> post_id, "is_active" => status}) do
@@ -104,7 +119,7 @@ defmodule Webpost.PostController do
   def show(conn, params) do
     %{"id" => post_id}=params
     post= Repo.get!(Post, post_id)
-    c= post |> Repo.preload(:comments)
+    c= post |> Repo.preload([comments: (from c in Comment, order_by: c.content)])
     comments= c.comments
     struct= %Comment{}
     params= %{}

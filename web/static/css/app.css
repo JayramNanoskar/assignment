@@ -8,3 +8,8 @@
 .status-indicator: vlink{
 	color: red;
 }
+
+.img_comment{
+	height: 10px;
+	width: 5px;
+}

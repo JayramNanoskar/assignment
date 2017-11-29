@@ -7,7 +7,7 @@ defmodule Webpost.Repo.Migrations.AddComments do
   			
   			add :content, :string
   			add :post_id, references(:posts)
-  			
+  			timestamp()
   		end
   end
 end
