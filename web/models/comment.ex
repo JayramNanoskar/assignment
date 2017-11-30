@@ -6,6 +6,7 @@
 	schema "comments" do
 		
 		field :content, :string
+		field :is_active, :boolean
 		belongs_to :post, Webpost.Post
 
 	end

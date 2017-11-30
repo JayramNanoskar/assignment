@@ -27,6 +27,7 @@ defmodule Webpost.Router do
     #resources "/posts", PostController 
     resources "/posts", PostController do 
         resources "/comments", CommentController
+        get "/comments/:id/isactive", CommentController, :is_active
     end
     #resources "/comments", CommentController
     # get "/comments/new", CommentController, :new

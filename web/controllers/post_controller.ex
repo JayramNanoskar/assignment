@@ -9,21 +9,21 @@ defmodule Webpost.PostController do
     posts= 	Repo.all(query)
 
     posts = for post <- posts do
-      IO.inspect post
-      IO.puts "======================  ************            ==========================="
+      # IO.inspect post
+      # IO.puts "======================  ************            ==========================="
       %Webpost.Post{id: post_id}= post
       total_comm=Repo.one(from p in Post, join: c in Comment, on: c.post_id == p.id, 
       where: p.id== ^post_id, select: count(c.id))
-      IO.inspect total_comm
+      # IO.inspect total_comm
       c = %{count: total_comm}
       Map.merge(post, c)
     end
 
     total_post= Repo.one(from(p in Post, select: count(p.id)))
     # IO.inspect total_post, charlists: :as_lists
-    IO.puts "======================              ==========================="
-    IO.inspect posts
-    IO.puts "======================              ==========================="
+    # IO.puts "======================              ==========================="
+    # IO.inspect posts
+    # IO.puts "======================              ==========================="
     render conn, "index.html", posts: posts, total: total_post
   end
 
@@ -35,15 +35,15 @@ defmodule Webpost.PostController do
      new_status= %{"is_active" => status}
      post=Repo.get(Post, post_id)
      changeset=Post.changeset(post, new_status)
-    if(status) do
+    if(status=="true") do
       Repo.update(changeset)
       conn
-          |> put_flash(:info, "Post Deactivated")
+          |> put_flash(:info, "Post Activated")
           |> redirect(to: post_path(conn, :index))
         else
            Repo.update(changeset)
           conn
-          |> put_flash(:info, "Post Activated")
+          |> put_flash(:info, "Post Deactivated")
           |> redirect(to: post_path(conn, :index))
         end
     #render(conn, "index.html",changeset: changeset, post: post)
@@ -119,8 +119,11 @@ defmodule Webpost.PostController do
   def show(conn, params) do
     %{"id" => post_id}=params
     post= Repo.get!(Post, post_id)
-    c= post |> Repo.preload([comments: (from c in Comment, order_by: c.content)])
+    c= post |> Repo.preload([comments: (from c in Comment, order_by: c.inserted_at)])
+    IO.puts "=========================================================="
+    IO.inspect c
     comments= c.comments
+    status= c.is_active
     struct= %Comment{}
     params= %{}
     changeset= Comment.changeset(struct, params)
@@ -134,7 +137,8 @@ defmodule Webpost.PostController do
     # IO.puts "#################___________________________###############"
     # changeset= Repo.all(Ecto.assoc(post, :comments))
     # changeset= Post.changeset(post)
-    render(conn, "show.html", post: post,  changeset: changeset, comments: comments, total_comments: total_comments)
+    render(conn, "show.html", post: post,  changeset: changeset, comments: comments,
+     total_comments: total_comments, comment_status: status)
   end
 
   

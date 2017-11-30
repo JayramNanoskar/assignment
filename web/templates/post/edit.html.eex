@@ -5,7 +5,7 @@
 
 <%= form_for @changeset, post_path(@conn, :update, @post), fn f-> %>
 	<div class="form-group">
-		<%= text_input f, :title, placeholder: "Title", class: "form-control" %>
+		<%= text_input f, :title, placeholder: "Enter Updated Post", class: "form-control" %>
 		<%= error_tag f, :title%>
 	</div>
 

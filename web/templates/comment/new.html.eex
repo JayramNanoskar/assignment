@@ -2,8 +2,8 @@
 
 	<div class="form-group">
 		
-		<%= text_input f, :title, placeholder: "Content", class: "form-control" %>
-		<%= error_tag f, :title %>
+		<%= text_input f, :title, placeholder: "Enter New Comment", class: "form-control" %>
+		<%= error_tag f, :content %>
 	</div>
 
 	<%= submit "Add comment", class: "btn btn-primary" %>

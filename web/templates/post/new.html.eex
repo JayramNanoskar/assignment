@@ -2,7 +2,7 @@
 
 	<div class="form-group">
 		
-		<%= text_input f, :title, placeholder: "Title", class: "form-control" %>
+		<%= text_input f, :title, placeholder: "Enter New Post", class: "form-control" %>
 		<%= error_tag f, :title %>
 	</div>
 

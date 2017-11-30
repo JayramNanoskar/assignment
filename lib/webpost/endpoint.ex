@@ -1,4 +1,4 @@
-defmodule Webpost.Endpoint do
+  defmodule Webpost.Endpoint do
   use Phoenix.Endpoint, otp_app: :webpost
 
   socket "/socket", Webpost.UserSocket
