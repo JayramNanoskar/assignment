@@ -1,26 +1,37 @@
 <html>
-<head>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-</head>
-<body>
-<h4><%= @post.title %></h4>
+	<head>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+	</head>
+	<body>
+		<h4><%= @post.title %></h4>
 
-<%= render Webpost.CommentView, "new.html" ,changeset: @changeset, conn: @conn, post: @post %>
+		<%= render Webpost.CommentView, "new.html" ,changeset: @changeset, conn: @conn, post: @post %>
 
-<h5>Comments(<%= @total_comments %>)</h5>
-<ul class="collection">
-	<%= for comment <- @comments do %>
-		<li class="collection-item">	
+		<h5>Comments(<%= @total_comments %>)</h5>
+		<ul class="collection">
+			<%= for comment <- @comments do %>
+				<li class="collection-item">	
+					<%= if comment.is_active == true do %>
+						<%= comment.content%>
+					<%= else %>
+						<strike><%= comment.content%></strike>
+					<% end %>
 			
-			<%= comment.content%>
+					<div class="right">
+						<%= if comment.is_active == true do %>
+							<%=link "Edit", to: post_comment_path(@conn, :edit, @post, comment) %>
+							<%=link "Delete", to: post_comment_path(@conn, :delete, @post, comment), method: :delete %>
+							<%= link "Invalid", to: post_comment_path(@conn, :is_active,
+							 @post, comment, is_active: "false") %>
+						<%= else %>
+							<%= link "Valid", to: post_comment_path(@conn, :is_active,
+						 	@post, comment, is_active: "true") %>
+						<% end %>
+					</div>
 
-				<%=link "Edit", to: post_comment_path(@conn, :edit, @post, comment) %>
-				<%=link "Delete", to: post_comment_path(@conn, :delete, @post, comment), method: :delete %>
-
-
-		</li>
-	<% end %>																											
-</ul>
-</body>
+				</li>
+			<% end %>																											
+		</ul>
+	</body>
 </html>
 

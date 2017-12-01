@@ -1,10 +1,7 @@
 <%= form_for @changeset, post_comment_path(@conn, :create, @post), fn f-> %>
-
 	<div class="form-group">
-		
 		<%= text_input f, :title, placeholder: "Enter New Comment", class: "form-control" %>
 		<%= error_tag f, :content %>
 	</div>
-
 	<%= submit "Add comment", class: "btn btn-primary" %>
 <% end %>	

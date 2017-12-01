@@ -15,15 +15,12 @@ defmodule Webpost.Router do
 
   scope "/", Webpost do
     pipe_through :browser # Use the default browser stack
-
     get "/", PostController, :index
     # get "/posts/new", PostController, :new
     # post "/posts", PostController, :create
     # get "/posts/:id/edit", PostController, :edit
     # put "/posts/:id", PostController, :update
-    get "/posts/:id/isactive", PostController, :is_active
-    
-    
+    get "/posts/:id/isactive", PostController, :is_active 
     #resources "/posts", PostController 
     resources "/posts", PostController do 
         resources "/comments", CommentController
@@ -31,11 +28,8 @@ defmodule Webpost.Router do
     end
     #resources "/comments", CommentController
     # get "/comments/new", CommentController, :new
-    # post "/comments", CommentController, :create
-    
-    
-   # resources "/status", CommentController, :isActive
-    
+    # post "/comments", CommentController, :create 
+    # resources "/status", CommentController, :isActive  
   end
 
   # Other scopes may use custom stacks.

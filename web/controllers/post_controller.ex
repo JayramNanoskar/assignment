@@ -31,49 +31,46 @@ defmodule Webpost.PostController do
 
 
   def is_active(conn, %{"id"=> post_id, "is_active" => status}) do
-     IO.inspect status
-     new_status= %{"is_active" => status}
-     post=Repo.get(Post, post_id)
-     changeset=Post.changeset(post, new_status)
+    # IO.inspect status
+    new_status= %{"is_active" => status}
+    post=Repo.get(Post, post_id)
+    changeset=Post.changeset(post, new_status)
     if(status=="true") do
       Repo.update(changeset)
       conn
-          |> put_flash(:info, "Post Activated")
-          |> redirect(to: post_path(conn, :index))
-        else
-           Repo.update(changeset)
-          conn
-          |> put_flash(:info, "Post Deactivated")
-          |> redirect(to: post_path(conn, :index))
-        end
+      |> put_flash(:info, "Post Activated")
+      |> redirect(to: post_path(conn, :index))
+    else
+      Repo.update(changeset)
+      conn
+      |> put_flash(:info, "Post Deactivated")
+      |> redirect(to: post_path(conn, :index))
+    end
     #render(conn, "index.html",changeset: changeset, post: post)
   end
 
 
  	def new(conn, _params) do
-
  		struct= %Post{}
  		params= %{}
-
  		changeset= Post.changeset(struct, params)
 		render(conn, "new.html", changeset: changeset)	
-
  	end
 
 
  	def create(conn, params) do
  		title= params["post"]["title"]
-
  		changeset= Post.changeset(%Post{}, %{title: title})
  		case Repo.insert(changeset) do
- 			{:ok, post}-> IO.inspect(post)
+ 			{:ok, post}-> 
+                    # IO.inspect(post)
  										conn
  										|> put_flash(:info, "Post Created")
  										|> redirect(to: post_path(conn,:index))						
- 			{:error, changeset}-> IO.inspect(changeset)
- 														render conn, "new.html", changeset: changeset
- 		end
- 	 
+ 			{:error, changeset}-> 
+                    # IO.inspect(changeset)
+ 										render conn, "new.html", changeset: changeset
+ 		end	 
  	end
 
 
@@ -81,7 +78,6 @@ defmodule Webpost.PostController do
  		post= Repo.get(Post, post_id)
  		#IO.inspect post
  		changeset=Post.changeset(post)
-
  		render conn, "edit.html", changeset: changeset, post: post
  	end
 
@@ -89,26 +85,23 @@ defmodule Webpost.PostController do
  	def update(conn, %{"id"=> post_id, "post"=> post}) do
 		# IO.inspect params q
 		#title= params[:post][:title]	
-    IO.inspect "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
-    IO.inspect post
+    # IO.inspect post
 		old_post= Repo.get(Post, post_id)
 		changeset= Post.changeset(old_post, post)
 		#IO.inspect changeset
 		case Repo.update(changeset) do
 			{:ok, _post}->
-				conn
-				|> put_flash(:info, "Post Updated")
-				|> redirect(to: post_path(conn, :index))
+				          conn
+				          |> put_flash(:info, "Post Updated")
+				          |> redirect(to: post_path(conn, :index))
 			{:error, changeset}->
-				render conn, "edit.html", changeset: changeset, post: old_post
+				                render conn, "edit.html", changeset: changeset, post: old_post
 		end
-
  	end
 
 
  	def delete(conn, %{"id" => post_id}) do
  		Repo.get!(Post, post_id) |> Repo.delete!
-
  		conn
  		|> put_flash(:info, "Topic Deleted")
  		|> redirect(to: post_path(conn, :index))
@@ -120,8 +113,7 @@ defmodule Webpost.PostController do
     %{"id" => post_id}=params
     post= Repo.get!(Post, post_id)
     c= post |> Repo.preload([comments: (from c in Comment, order_by: c.inserted_at)])
-    IO.puts "=========================================================="
-    IO.inspect c
+    # IO.inspect c
     comments= c.comments
     status= c.is_active
     struct= %Comment{}
@@ -138,30 +130,8 @@ defmodule Webpost.PostController do
     # changeset= Repo.all(Ecto.assoc(post, :comments))
     # changeset= Post.changeset(post)
     render(conn, "show.html", post: post,  changeset: changeset, comments: comments,
-     total_comments: total_comments, comment_status: status)
+    total_comments: total_comments, comment_status: status)
   end
-
-  
-
-
-
-
-
-
-  # def add_comment(conn, %{"comment" => comment_params, "post_id" => post_id}) do
-  #   changeset = Comment.changeset(%Comment{}, Map.put(comment_params, "post_id", post_id))
-  #   post = Repo.get(Post, post_id) |> Repo.preload([:comments])
-
-  #   if changeset.valid? do
-  #     Repo.insert(changeset)
-
-  #     conn
-  #     |> put_flash(:info, "Comment added.")
-  #     |> redirect(to: post_path(conn, :show, post))
-  #   else
-  #     render(conn, "show.html", post: post, changeset: changeset)
-  #   end
-  #end
 
   
 end
