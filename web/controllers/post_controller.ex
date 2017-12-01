@@ -7,7 +7,6 @@ defmodule Webpost.PostController do
 	def index(conn, _params) do
     query= from(p in Post, order_by: p.title)
     posts= 	Repo.all(query)
-
     posts = for post <- posts do
       # IO.inspect post
       # IO.puts "======================  ************            ==========================="
@@ -18,7 +17,6 @@ defmodule Webpost.PostController do
       c = %{count: total_comm}
       Map.merge(post, c)
     end
-
     total_post= Repo.one(from(p in Post, select: count(p.id)))
     # IO.inspect total_post, charlists: :as_lists
     # IO.puts "======================              ==========================="
@@ -26,9 +24,6 @@ defmodule Webpost.PostController do
     # IO.puts "======================              ==========================="
     render conn, "index.html", posts: posts, total: total_post
   end
-
-
-
 
   def is_active(conn, %{"id"=> post_id, "is_active" => status}) do
     # IO.inspect status
@@ -49,7 +44,6 @@ defmodule Webpost.PostController do
     #render(conn, "index.html",changeset: changeset, post: post)
   end
 
-
  	def new(conn, _params) do
  		struct= %Post{}
  		params= %{}
@@ -57,22 +51,20 @@ defmodule Webpost.PostController do
 		render(conn, "new.html", changeset: changeset)	
  	end
 
-
  	def create(conn, params) do
  		title= params["post"]["title"]
  		changeset= Post.changeset(%Post{}, %{title: title})
  		case Repo.insert(changeset) do
  			{:ok, post}-> 
-                    # IO.inspect(post)
- 										conn
- 										|> put_flash(:info, "Post Created")
- 										|> redirect(to: post_path(conn,:index))						
+          # IO.inspect(post)
+ 					conn
+ 					|> put_flash(:info, "Post Created")
+ 					|> redirect(to: post_path(conn,:index))						
  			{:error, changeset}-> 
-                    # IO.inspect(changeset)
- 										render conn, "new.html", changeset: changeset
+          # IO.inspect(changeset)
+ 					render conn, "new.html", changeset: changeset
  		end	 
  	end
-
 
  	def edit(conn, %{"id" => post_id}) do
  		post= Repo.get(Post, post_id)
@@ -80,7 +72,6 @@ defmodule Webpost.PostController do
  		changeset=Post.changeset(post)
  		render conn, "edit.html", changeset: changeset, post: post
  	end
-
 
  	def update(conn, %{"id"=> post_id, "post"=> post}) do
 		# IO.inspect params q
@@ -91,14 +82,13 @@ defmodule Webpost.PostController do
 		#IO.inspect changeset
 		case Repo.update(changeset) do
 			{:ok, _post}->
-				          conn
-				          |> put_flash(:info, "Post Updated")
-				          |> redirect(to: post_path(conn, :index))
+				  conn
+				  |> put_flash(:info, "Post Updated")
+				  |> redirect(to: post_path(conn, :index))
 			{:error, changeset}->
-				                render conn, "edit.html", changeset: changeset, post: old_post
+				  render conn, "edit.html", changeset: changeset, post: old_post
 		end
  	end
-
 
  	def delete(conn, %{"id" => post_id}) do
  		Repo.get!(Post, post_id) |> Repo.delete!
@@ -106,8 +96,6 @@ defmodule Webpost.PostController do
  		|> put_flash(:info, "Topic Deleted")
  		|> redirect(to: post_path(conn, :index))
  	end
-
-
 
   def show(conn, params) do
     %{"id" => post_id}=params
@@ -119,11 +107,9 @@ defmodule Webpost.PostController do
     struct= %Comment{}
     params= %{}
     changeset= Comment.changeset(struct, params)
-
     query= from p in Post, join: c in Comment, on: c.post_id == p.id, 
     where: p.id == ^post_id, select: count(c.id)
-    total_comments= Repo.one(query)
-    
+    total_comments= Repo.one(query)   
     # IO.puts "#################____________________________##############"
     # IO.inspect comments 
     # IO.puts "#################___________________________###############"
@@ -131,7 +117,5 @@ defmodule Webpost.PostController do
     # changeset= Post.changeset(post)
     render(conn, "show.html", post: post,  changeset: changeset, comments: comments,
     total_comments: total_comments, comment_status: status)
-  end
-
-  
+  end 
 end
