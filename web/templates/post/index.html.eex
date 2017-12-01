@@ -1,15 +1,15 @@
 <html>
 	<head>
 		<%# <img class="img_comment" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJFARts0JzzxkPFrpZxRTWI_inyOlgxCWuq8LFekHCELzASG4qLQ"/> %>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+		<link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 		<%# <link rel="stylesheet" href="/static/css/font-awesome.min.css"> %>
-		<script src="https://use.fontawesome.com/2def36dec3.js"></script>
+		<script src = "https://use.fontawesome.com/2def36dec3.js"></script>
 	</head>
 	<body>
 		<h5>Posts (<%= @total %>) </h5> 
-		<ul class="collection">
+		<ul class = "collection">
 			<%= for post <- @posts do %>
-				<li class="collection-item">
+				<li class = "collection-item">
 
 					<%= if post.is_active == true do %>	
 						<%= post.title %>
@@ -17,9 +17,9 @@
 						<strike><%= post.title %></strike>
 					<% end %>
 
-					<i class="fa fa-comment"></i>(<%= post.count%>)
+					<i class = "fa fa-comment"></i>(<%= post.count%>)
 
-					<div class="right"> 	
+					<div class = "right"> 	
 						<%= if post.is_active == true do %>
 							<%= link "Show", to: post_path(@conn, :show, post) %>
 							<%= link "Edit", to: post_path(@conn, :edit, post) %>
@@ -34,9 +34,9 @@
 			<% end %>
 		</ul>
 
-		<div class="fixed-action-btn">
+		<div class = "fixed-action-btn">
 			<%= link to: post_path(@conn, :new), class: "btn-floating btn-large waves-effect waves-light red" do %>
-				<i class="material-icons">Add</i>
+				<i class = "material-icons">Add</i>
 			<% end %>
 		</div>
 	</body>

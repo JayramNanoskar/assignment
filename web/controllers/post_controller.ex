@@ -5,32 +5,27 @@ defmodule Webpost.PostController do
 	alias Webpost.Comment
 
 	def index(conn, _params) do
-    query= from(p in Post, order_by: p.title)
-    posts= 	Repo.all(query)
+    query = from(p in Post, order_by: p.title)
+    posts = Repo.all(query)
     posts = for post <- posts do
-      # IO.inspect post
-      # IO.puts "======================  ************            ==========================="
       %Webpost.Post{id: post_id}= post
-      total_comm=Repo.one(from p in Post, join: c in Comment, on: c.post_id == p.id, 
-      where: p.id== ^post_id, select: count(c.id))
-      # IO.inspect total_comm
+
+      total_comm = Repo.one(from p in Post, join: c in Comment, on: c.post_id == p.id, 
+      where: p.id == ^post_id, select: count(c.id))
+      
       c = %{count: total_comm}
       Map.merge(post, c)
     end
-    total_post= Repo.one(from(p in Post, select: count(p.id)))
-    # IO.inspect total_post, charlists: :as_lists
-    # IO.puts "======================              ==========================="
-    # IO.inspect posts
-    # IO.puts "======================              ==========================="
+    total_post = Repo.one(from(p in Post, select: count(p.id)))
     render conn, "index.html", posts: posts, total: total_post
   end
 
-  def is_active(conn, %{"id"=> post_id, "is_active" => status}) do
-    # IO.inspect status
-    new_status= %{"is_active" => status}
-    post=Repo.get(Post, post_id)
-    changeset=Post.changeset(post, new_status)
-    if(status=="true") do
+  def is_active(conn, %{"id" => post_id, "is_active" => status}) do
+    new_status = %{"is_active" => status}
+    post = Repo.get(Post, post_id)
+
+    changeset = Post.changeset(post, new_status)
+    if(status == "true") do
       Repo.update(changeset)
       conn
       |> put_flash(:info, "Post Activated")
@@ -45,41 +40,39 @@ defmodule Webpost.PostController do
   end
 
  	def new(conn, _params) do
- 		struct= %Post{}
- 		params= %{}
+ 		struct = %Post{}
+ 		params = %{}
+
  		changeset= Post.changeset(struct, params)
 		render(conn, "new.html", changeset: changeset)	
  	end
 
  	def create(conn, params) do
- 		title= params["post"]["title"]
- 		changeset= Post.changeset(%Post{}, %{title: title})
+ 		title = params["post"]["title"]
+
+ 		changeset = Post.changeset(%Post{}, %{title: title})
  		case Repo.insert(changeset) do
  			{:ok, post}-> 
-          # IO.inspect(post)
  					conn
  					|> put_flash(:info, "Post Created")
  					|> redirect(to: post_path(conn,:index))						
  			{:error, changeset}-> 
-          # IO.inspect(changeset)
  					render conn, "new.html", changeset: changeset
  		end	 
  	end
 
  	def edit(conn, %{"id" => post_id}) do
- 		post= Repo.get(Post, post_id)
- 		#IO.inspect post
- 		changeset=Post.changeset(post)
+ 		post = Repo.get(Post, post_id)
+
+ 		changeset = Post.changeset(post)
  		render conn, "edit.html", changeset: changeset, post: post
  	end
 
- 	def update(conn, %{"id"=> post_id, "post"=> post}) do
-		# IO.inspect params q
+ 	def update(conn, %{"id" => post_id, "post" => post}) do
 		#title= params[:post][:title]	
-    # IO.inspect post
-		old_post= Repo.get(Post, post_id)
-		changeset= Post.changeset(old_post, post)
-		#IO.inspect changeset
+		old_post = Repo.get(Post, post_id)
+
+		changeset = Post.changeset(old_post, post)
 		case Repo.update(changeset) do
 			{:ok, _post}->
 				  conn
@@ -100,22 +93,21 @@ defmodule Webpost.PostController do
   def show(conn, params) do
     %{"id" => post_id}=params
     post= Repo.get!(Post, post_id)
-    c= post |> Repo.preload([comments: (from c in Comment, order_by: c.inserted_at)])
-    # IO.inspect c
-    comments= c.comments
-    status= c.is_active
-    struct= %Comment{}
-    params= %{}
-    changeset= Comment.changeset(struct, params)
-    query= from p in Post, join: c in Comment, on: c.post_id == p.id, 
+    c = post |> Repo.preload([comments: (from c in Comment, order_by: c.inserted_at)])
+    
+    comments = c.comments
+    status = c.is_active
+    struct = %Comment{}
+    params = %{}
+
+    changeset = Comment.changeset(struct, params)
+
+    query = from p in Post, join: c in Comment, on: c.post_id == p.id, 
     where: p.id == ^post_id, select: count(c.id)
-    total_comments= Repo.one(query)   
-    # IO.puts "#################____________________________##############"
-    # IO.inspect comments 
-    # IO.puts "#################___________________________###############"
+    total_comments = Repo.one(query)   
     # changeset= Repo.all(Ecto.assoc(post, :comments))
     # changeset= Post.changeset(post)
     render(conn, "show.html", post: post,  changeset: changeset, comments: comments,
-    total_comments: total_comments, comment_status: status)
+      total_comments: total_comments, comment_status: status)
   end 
 end
